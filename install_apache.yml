@@ -12,6 +12,14 @@
     apt:
       name: apache2
       state: latest  
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install apache2 package
+    yum:
+      name: apache2    
+      state: latest
+    when: ansible_distribution == "CentOS"
+
 
   - name: add php support for apache
     apt:
