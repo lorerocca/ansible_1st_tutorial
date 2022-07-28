@@ -1,0 +1,15 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: install apache and php package
+    package: #modulo generico, senza necessità di specificare se apt, dnf, o yum
+      name:
+        - "{{ apache_package }}"  #apache e php package non è il nome dei package, qui sono definite come env. Bisogna modificare il file di inventory
+        - "{{ php_package }}"
+      state: latest
+      update_cache: yes
+
+
