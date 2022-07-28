@@ -2,29 +2,43 @@
 
 - hosts: all
   become: true
-
   tasks:
-  - name: update repo index
-    apt:
-      update_cache: yes
-
   - name: install apache2 package
+    tags: apache
     apt:
-      name: apache2
-      state: latest  
+      name:
+       - apache2
+       - libapache2-mod-php
+      state: latest
+      update_cache: yes  
     when: ansible_distribution == "Ubuntu"
 
+
+  - name: copy default html file for site
+    tags: apache
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644 
+
+
+
   - name: install apache2 package
-    yum:
-      name: apache2    
+    dnf:
+      name:
+       - httpd
+       - php          
       state: latest
+      update_Cache: yes  
     when: ansible_distribution == "CentOS"
 
 
-  - name: add php support for apache
-    apt:
-      name: libapache2-mod-php
-      state: latest
+      # - name: add php support for apache
+      #apt:
+      # name: libapache2-mod-php
+      # state: latest
 
 
 
